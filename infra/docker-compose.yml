@@ -11,17 +11,19 @@ services:
       - auth-shield
     volumes:
       - ./infra/confs/servers/:/etc/nginx/conf.d/
-      - ../api:/var/www/html
       - ./infra/confs/ssl/:/var/www/ssl
+      - ../var/logs/nginx:/var/log/nginx
+      - ../api:/var/www/html
 
   php:
     build:
-      dockerfile: php.dockerfile
-      context: ..
+      context: ../api
+      dockerfile: ./infra/php.dockerfile
     image: php:8.2-fpm
     container_name: php
     volumes:
       - ../api:/var/www/html
+      - ../var/logs/php:/var/log/php-fpm
     ports:
       - "9000:9000"
     networks:
