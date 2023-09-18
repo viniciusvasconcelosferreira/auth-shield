@@ -82,4 +82,4 @@ Se você quiser contribuir, por favor abra uma issue e/ou envie um pull request.
 
 ## Licença
 
-Este projeto está sob a licença [MIT](LICENSE).
+Este projeto está sob a licença [GPL-3.0](LICENSE).
