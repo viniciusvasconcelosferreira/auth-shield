@@ -18,8 +18,7 @@ services:
   php:
     build:
       context: ../api
-      dockerfile: ./infra/php.dockerfile
-    image: php:8.2-fpm
+      dockerfile: ../infra/php.dockerfile
     container_name: php
     volumes:
       - ../api:/var/www/html
