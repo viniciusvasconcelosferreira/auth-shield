@@ -2,24 +2,32 @@ version: "3.9"
 
 services:
   nginx:
-    image: nginx:1.21.1
+    image: nginx:alpine
     container_name: nginx
+    restart: unless-stopped
+    tty: true
     ports:
-      - "80:80"
+      - "81:80"
       - "443:443"
-    networks:
-      - auth-shield
     volumes:
-      - ./infra/confs/servers/:/etc/nginx/conf.d/
-      - ./infra/confs/ssl/:/var/www/ssl
+      - ../infra/confs/servers/:/etc/nginx/conf.d/
+      - ../infra/confs/ssl/:/var/www/ssl
       - ../var/logs/nginx:/var/log/nginx
       - ../api:/var/www/html
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - auth-shield
 
   php:
     build:
       context: ../api
       dockerfile: ../infra/php.dockerfile
     container_name: php
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www/html
     volumes:
       - ../api:/var/www/html
       - ../var/logs/php:/var/log/php-fpm
@@ -31,14 +39,14 @@ services:
   mysql:
     image: mysql:8.0.33
     container_name: mysql
-    volumes:
-      - ./infra/confs/mysql_db:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_ROOT_PASSWORD:
-      MYSQL_DATABASE: auth_shield
-      MYSQL_USER: root
-      MYSQL_PASSWORD:
+      MYSQL_ROOT_PASSWORD: db_adm_root
+      MYSQL_DATABASE: auth_shield_db
+      MYSQL_USER: dev-user
+      MYSQL_PASSWORD: dev-password
+    volumes:
+#      - ../infra/confs/mysql_db:/var/lib/mysql  # Onde os dados do banco serão armazenados localmente
+      - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
     networks:
@@ -47,3 +55,6 @@ services:
 networks:
   auth-shield:
     driver: bridge
+
+volumes:
+  mysql_data:

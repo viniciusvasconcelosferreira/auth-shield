@@ -56,3 +56,6 @@ RUN echo "xdebug.client_port = 9000" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 # Define o diretório de trabalho
 WORKDIR /var/www/html
+
+# Corrige as permissões da pasta
+RUN chmod 777 -R /var/www/html
