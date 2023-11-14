@@ -8,26 +8,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Address extends Model
+class Permission extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'postal_code',
-        'address',
-        'city',
-        'state',
-        'country',
-        'street',
-        'number',
-        'neighborhood',
-        'complement',
-        'reference',
-        'set_default'
+        'name',
+        'label'
     ];
 
-    public function user(): BelongsTo
+    public function group(): BelongsToMany
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(Groups::class);
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'permissions_roles');
     }
 }
