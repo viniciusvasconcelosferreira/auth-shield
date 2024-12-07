@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\Permission\Models;
 
+use App\Modules\Groups\Models\Groups;
+use App\Modules\Role\Models\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
